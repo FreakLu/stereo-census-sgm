@@ -28,7 +28,7 @@ def main():
     disp = sgm_disparity_8dir_numba(cost_vol, P1=8, P2=48)
 
     disp_vis = disp_to_vis_percentile(disp, lo_offset=35, hi_offset=5, p_med=50, p_hi=95)
-    show_pair(left, disp_vis, scale=0.8)
+    show_pair(left, disp_vis, scale=0.5)
 
 if __name__ == "__main__":
     main()
