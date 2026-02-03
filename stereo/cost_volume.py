@@ -47,6 +47,8 @@ def build_cost_volume_census_range(census_L, census_R, min_disp, num_disp):
 
         xor = census_L ^ shifted_R
         cost = popcount_uint32(xor)
+        if d > 0:
+            cost[:, :d] = 255
         cost_volume[:, :, i] = cost
 
     return cost_volume

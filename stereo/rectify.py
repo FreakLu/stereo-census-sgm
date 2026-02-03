@@ -90,3 +90,8 @@ def seperation(frame:np.ndarray):
     left_half  = frame[:, :mid]
     right_half = frame[:, mid:]
     return left_half,right_half
+
+def unificaton(left:np.ndarray,right:np.ndarray):
+    if left.shape[0] != right.shape[0]:
+        raise ValueError("left/right height mismatch")
+    return np.hstack([left,right])

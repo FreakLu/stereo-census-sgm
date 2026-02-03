@@ -25,3 +25,11 @@ def show_pair(left_gray: np.ndarray, disp_vis: np.ndarray, scale=0.5):
     cv2.imshow("left", left_show)
     cv2.imshow("disp", disp_show)
     cv2.waitKey(0)
+
+def disp_to_vis_linear(disp: np.ndarray, D: int, invalid_zero: bool = True) -> np.ndarray:
+    d = disp.astype(np.float32)
+
+    vis = (d / max(1, (D - 1))) * 255.0
+    vis = np.clip(vis, 0, 255).astype(np.uint8)
+
+    return vis

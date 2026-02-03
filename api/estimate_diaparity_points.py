@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import json
+import time
 from typing import List, Tuple, Optional
 from stereo.rectify import rectify_pair,rectify_points_lr
 from stereo.anno import AnnPoint,PointDepthResult
@@ -16,7 +17,7 @@ def estimate_depth_at_points(
     dy: float = 20, dmin: float = 0, dmax: float = 500,
     return_vis: bool = False
 ) -> Tuple[List[PointDepthResult], Optional[np.ndarray]]:
-    
+    t0 = time.perf_counter()
     img_yolo = cv2.imread(img_stereo_path,cv2.IMREAD_COLOR)
     imgL,imgR = split_stereo_image(img_yolo)
 
@@ -94,6 +95,8 @@ def estimate_depth_at_points(
             )
         )
     vis2 = draw_step2_final_matches(imgL, imgR, left_pts, right_pts, matches, scale=0.5, show_index=True)
+    t1 = time.perf_counter()
+    print(f"[estimate_depth_at_points] time = {(t1 - t0)*1000:.2f} ms")
     if return_vis:
         cv2.imshow("step2_final_matches", vis2)
         cv2.waitKey(0)
