@@ -10,7 +10,7 @@ def estimate_depth_global(
         img_path:str,
         calib_path:str,
         P1:int = 8,P2:int = 40,
-        return_vis:bool=True,
+        show_vis:bool=True,
 ) -> np.ndarray:
     frame = cv2.imread(img_path)
     left,right = seperation(frame)
@@ -24,6 +24,7 @@ def estimate_depth_global(
     disp = sgm_disparity_8dir_numba(cost_vol, P1=8, P2=48)
 
     disp_vis = disp_to_vis_percentile(disp, lo_offset=35, hi_offset=5, p_med=50, p_hi=95)
-    show_pair(left, disp_vis, scale=0.5)
+    if show_vis:
+        show_pair(left, disp_vis, scale=0.5)
 
     return disp
