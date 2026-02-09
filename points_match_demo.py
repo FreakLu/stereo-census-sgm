@@ -1,4 +1,4 @@
-from api.estimate_diaparity_points import estimate_depth_at_points
+from pipeline.points_depth import estimate_depth_at_points
 import cv2
 
 if __name__ == "__main__":

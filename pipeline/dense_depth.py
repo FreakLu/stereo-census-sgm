@@ -15,6 +15,24 @@ def estimate_depth_global(
         P1:int = 4,P2:int = 24,
         show_vis:bool=True
 ) -> np.ndarray:
+    """
+    Using Census + SGM to compute depth on whole image
+
+    Args:
+        img_stereo_path (str): Path to the concatenated stereo image (left | right).
+        calib_path (str): Path to stereo camera calibration file.
+        need_rectify(bool):Whether to rectify the image pair(depends on dataset)
+        return_vis (bool): Whether to return visualization image.
+        min_disp(int):the minimun despiraty in image(estimate a resonable range to accelerate computation).
+        num_disp(int):the range of searching desparity(min_disp+num_disp).
+        P1 (int): Penalty for small disparity changes (|d_p - d_q| = 1).
+            Controls local smoothness of the disparity map and preserves fine details.
+        P2 (int): Penalty for larger disparity changes (|d_p - d_q| > 1).
+        show_vis (bool): Whether to display disparity map.
+
+    Returns:
+        disp(np.ndarray):return disparity map
+    """
     t0 = time.perf_counter()
     frame = cv2.imread(img_path)
     left,right = seperation(frame)
@@ -32,6 +50,6 @@ def estimate_depth_global(
     t1 = time.perf_counter()
     print(f"[estimate_depth_global] time = {(t1 - t0)*1000:.2f} ms")
     if show_vis:
-        show_pair(left, disp_vis, scale=0.8)
+        show_pair(left, disp_vis, scale=0.6)
 
     return disp

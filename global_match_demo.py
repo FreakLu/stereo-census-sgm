@@ -1,4 +1,4 @@
-from api.estimate_disparity_map import estimate_depth_global
+from pipeline.dense_depth import estimate_depth_global
 
 if __name__ == "__main__":
 

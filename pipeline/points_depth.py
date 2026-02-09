@@ -18,6 +18,30 @@ def estimate_depth_at_points(
     return_vis: bool = False,
     show_vis: bool = True
 ) -> Tuple[List[PointDepthResult], Optional[np.ndarray]]:
+    """
+    Estimate depth at sparse object points detected by YOLO using stereo matching.
+
+    This function takes a stereo image pair (concatenated left-right image) and
+    object center points from YOLO detection, performs stereo rectification,
+    point-level correspondence search, and computes depth for matched points.
+
+    Args:
+        img_stereo_path (str): Path to the concatenated stereo image (left | right).
+        yolo_json (str): Path to YOLO detection result in JSON format.
+        calib_path (str): Path to stereo camera calibration file.
+        fx (float): Focal length in pixels (x direction).
+        baseline (float): Stereo baseline in the same unit as depth output.
+        filter_names (Optional[List[str]]): Class names to keep; others are ignored.
+        dy (float): Vertical tolerance for epipolar constraint (in pixels).
+        dmin (float): Minimum allowed disparity.
+        dmax (float): Maximum allowed disparity.
+        return_vis (bool): Whether to return visualization image.
+        show_vis (bool): Whether to display visualization using OpenCV.
+
+    Returns:
+        results (List[PointDepthResult]): Depth estimation results for matched points.
+        vis (Optional[np.ndarray]): Visualization image if return_vis is True; otherwise None.
+    """
     t0 = time.perf_counter()
     img_yolo = cv2.imread(img_stereo_path,cv2.IMREAD_COLOR)
     imgL,imgR = split_stereo_image(img_yolo)
@@ -63,10 +87,10 @@ def estimate_depth_at_points(
         left_pts, right_pts,
         candidates,
         census_window_size=2,
-        patch_r=8,      # 17x17
-        dx_max=5,       # right x refine in [-5, +5]
-        dy_max=0,       # start with 0 (rectified)
-        max_best_cost=999999999,  # 先不拒绝，先看分布
+        patch_r=8,
+        dx_max=5,
+        dy_max=0,
+        max_best_cost=999999999,
         min_gap=0
     )
 
